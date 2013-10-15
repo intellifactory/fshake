@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Web
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FShake", "FShake\FShake.fsproj", "{7F83732F-4369-4DDB-B7E7-C21C128BAD08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F83732F-4369-4DDB-B7E7-C21C128BAD08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F83732F-4369-4DDB-B7E7-C21C128BAD08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F83732F-4369-4DDB-B7E7-C21C128BAD08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F83732F-4369-4DDB-B7E7-C21C128BAD08}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
