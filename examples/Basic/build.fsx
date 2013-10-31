@@ -1,3 +1,9 @@
+/// Adaptation of the simple example from Neil Mitchell's Shake:
+/// http://neilmitchell.blogspot.com/2012/02/shake-better-make.html
+///
+/// Still lots of work needed to make this parctical.
+
+
 #r "System.IO.Compression"
 #r "System.IO.Compression.FileSystem"
 #r "../../build/FShake.dll"
@@ -20,14 +26,17 @@ let createZip (out: string) (files: seq<string>) =
 
 let rules =
     Rules.Concat [
-        "result.zip" *> fun p -> Recipes.Do {
+        "result.zip" *> fun p -> Recipes.Do { // the monad tracks deps
             do! Files.Need ["list.txt"]
-            let! contents = Files.ReadLines "list.txt"
-            do! Files.Need contents
+            let! contents = Files.ReadLines "list.txt" 
+            do! Files.Need contents // including dynamic deps
             return createZip p contents
         }
     ]
 
+/// This will build the zip file IF NECESSARY - tracking changes to
+/// all files specified in list.txt.
 Builder.BuildTarget { RootDirectory = "." } rules
     (Files.CreateTarget "result.zip")
 |> Async.RunSynchronously
+
