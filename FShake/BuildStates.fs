@@ -1,12 +1,5 @@
 ﻿namespace FShake
 
-open System
-open System.Collections.Concurrent
-open System.Collections.Generic
-open System.IO
-open FsPickler
-open FsPickler.Combinators
-
 module BuildStates =
 
     type TargetState =
@@ -26,18 +19,18 @@ module BuildStates =
         }
 
     let targetStatePickler =
-        Pickler.sum (fun x k1 k2 k3 ->
+        Pickler.Sum (fun x k1 k2 k3 ->
             match x with
             | Built x -> k1 x
             | Building -> k2 ()
             | Unknown -> k3 ())
-        ^+ Pickler.case Built (Snapshots.BuildPickler Pickler.bytes)
-        ^+ Pickler.variant Building
-        ^. Pickler.variant Unknown
+        ^+ Pickler.Case Built (Snapshots.BuildPickler Pickler.Bytes)
+        ^+ Pickler.Variant Building
+        ^. Pickler.Variant Unknown
 
     let targetStateBoxPickler =
         targetStatePickler
-        |> Pickler.wrap
+        |> Pickler.Wrap
             (fun st -> { LockRoot = obj (); State = st })
             (fun box -> box.State)
 
@@ -45,8 +38,8 @@ module BuildStates =
     let toPair (k, v) = KeyValuePair(k, v)
 
     let buildStatePickler =
-        Pickler.pairSeq Pickler.TargetBox targetStateBoxPickler
-        |> Pickler.wrap
+        Pickler.PairSeq TargetBoxes.Pickler targetStateBoxPickler
+        |> Pickler.Wrap
             (fun xs ->
                 let xs =
                     xs
@@ -74,17 +67,16 @@ module BuildStates =
 
     let Transact path action =
         async {
-            let fsp = FsPickler()
             use s = openRW path
             let st =
                 match s.Length with
                 | 0L -> freshBuildState ()
                 | _ ->
-                    let r = fsp.Deserialize(buildStatePickler, s)
+                    let r = Pickler.ReadFromStream buildStatePickler s
                     let _ = s.Seek(0L, SeekOrigin.Begin)
                     r
             let! res = action st
-            do fsp.Serialize(buildStatePickler, s, st)
+            do Pickler.WriteToStream buildStatePickler s st
             return res
         }
 
@@ -107,7 +99,7 @@ module BuildStates =
             | TargetState.Built snap ->
                 sb.State <- Building
                 snap
-                |> Snapshots.Map (unpickle p)
+                |> Snapshots.Map (Pickler.Unpickle p)
                 |> Some
             | TargetState.Unknown ->
                 None
@@ -115,7 +107,7 @@ module BuildStates =
     let doneBuilding p snap sb =
         let snap =
             snap
-            |> Snapshots.Map (pickle p)
+            |> Snapshots.Map (Pickler.Pickle p)
         lock sb.LockRoot <| fun () ->
             sb.State <- Built snap
 
@@ -143,7 +135,7 @@ module BuildStates =
                     new TargetBoxes.IConsumer<_> with
                         member __.Consume(t) =
                             let p = Target.ValuePickler t
-                            Some (box (unpickle p data))
+                            Some (box (Pickler.Unpickle p data))
                 }
             | _ -> None
 

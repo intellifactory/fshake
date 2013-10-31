@@ -1,8 +1,5 @@
 ﻿namespace FShake
 
-open System
-open FsPickler
-
 module TargetBoxes =
 
     type IConsumer<'R> =
@@ -20,5 +17,6 @@ module TargetBoxes =
     val Unpack : T -> IConsumer<'R> -> 'R
     val Validate : T -> obj -> Async<bool>
     val ValueType : T -> Type
+    val Pickler : Pickler<T>
 
 type TargetBox = TargetBoxes.T

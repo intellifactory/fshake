@@ -1,7 +1,5 @@
 ﻿namespace FShake
 
-open FsPickler
-
 module Snapshots =
 
     [<Sealed>]
@@ -13,6 +11,8 @@ module Snapshots =
     val Get : Snapshot<'T> -> 'T
     val Validate : (TargetBox -> option<obj>) -> Snapshot<'T> -> Async<bool>
     val BuildPickler : Pickler<'T> -> Pickler<Snapshot<'T>>
+    val Unit : Snapshot<unit>
+    val WithTargetBox : TargetBox -> Snapshot<'T> -> Snapshot<'T>
 
 type Snapshot<'T> =
     Snapshots.Snapshot<'T>

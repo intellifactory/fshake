@@ -1,7 +1,5 @@
 ﻿namespace FShake
 
-open System
-
 /// Represents evidence that a given type has a unit constructor
 /// and a unique singleton instance that can be shared by the program.
 [<Sealed>]

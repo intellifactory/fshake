@@ -7,7 +7,6 @@ type Rules =
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module Rules =
-    open System
 
     let Append (a: Rules) (b: Rules) : Rules =
         {

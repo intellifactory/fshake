@@ -43,7 +43,7 @@ module Builder =
             function
             | None -> b.BuildRecipe(t)
             | Some snap ->
-                printfn "FOUND SNAPSHOT"
+                printfn "FOUND SNAPSHOT %O" snap
                 let lookup x = BuildStates.TryFind x state
                 async {
                     let! ok = Snapshots.Validate lookup snap

@@ -1,8 +1,5 @@
 ﻿namespace FShake
 
-open System
-open FsPickler
-
 /// Targets provide an abstract representation for a build goal,
 /// such as a file. Technically, a `Target` value speializes `Targetable`
 /// to a given key.

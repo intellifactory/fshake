@@ -1,8 +1,5 @@
 ﻿namespace FShake
 
-open FsPickler
-open FsPickler.Combinators
-
 module Target =
 
     type IConsumer<'R,'V> =
@@ -65,7 +62,7 @@ module Target =
             new IConsumer<_,_> with
                 member __.Consume(tt, key) =
                     tt.Instance.KeyPickler
-                    |> Pickler.wrap box unbox
+                    |> Pickler.Wrap box unbox
         }
 
     let Text t =

@@ -1,7 +1,5 @@
 ﻿namespace FShake
 
-open System
-
 type Targetable<'Key,'Value> =
     {
         Instance : ITargetable<'Key,'Value>

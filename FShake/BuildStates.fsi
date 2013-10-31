@@ -1,10 +1,5 @@
 ﻿namespace FShake
 
-open System
-open System.IO
-open FsPickler
-open FsPickler.Combinators
-
 module BuildStates =
 
     [<Sealed>]

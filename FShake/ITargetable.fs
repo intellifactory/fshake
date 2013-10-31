@@ -1,9 +1,5 @@
 ﻿namespace FShake
 
-open System
-open System.Collections.Generic
-open FsPickler
-
 /// Provides operations on a `'Key` and `'Value` pair of types.
 type ITargetable<'Key,'Value> =
 

@@ -1,10 +1,5 @@
 ﻿namespace FShake
 
-open System
-open System.IO
-open FsPickler
-open FsPickler.Combinators
-
 module FileTargets =
 
     type FileSnapshot = DateTime
@@ -22,8 +17,8 @@ module FileTargets =
                         return None
                 }
             member __.KeyEquality = HashIdentity.Structural
-            member __.KeyPickler = Pickler.string
-            member __.ValuePickler = Pickler.auto<_>
+            member __.KeyPickler = Pickler.String
+            member __.ValuePickler = Pickler.DateTime
             member __.ShowKey(p) = p
             member __.Validate(p, s) =
                 async {

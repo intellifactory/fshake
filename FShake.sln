@@ -8,6 +8,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{C62CA7E7-1407-4736-8983-05EBFF813C2D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basic", "Basic", "{A8F08B12-BE69-4211-88AF-55E3B553BCA9}"
+	ProjectSection(SolutionItems) = preProject
+		examples\Basic\build.fsx = examples\Basic\build.fsx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,5 +28,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C62CA7E7-1407-4736-8983-05EBFF813C2D} = {DB61C9EC-A719-4CD7-8E11-2409E9B88278}
+		{A8F08B12-BE69-4211-88AF-55E3B553BCA9} = {C62CA7E7-1407-4736-8983-05EBFF813C2D}
 	EndGlobalSection
 EndGlobal

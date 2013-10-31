@@ -1,0 +1,4 @@
+*.suo
+build/
+bin/
+obj/

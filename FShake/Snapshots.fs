@@ -1,8 +1,5 @@
 ﻿namespace FShake
 
-open FsPickler
-open FsPickler.Combinators
-
 module Snapshots =
 
     type Snapshot<'T> =
@@ -11,11 +8,18 @@ module Snapshots =
             Value : 'T
         }
 
+        override __.ToString() =
+            string (box __.Value) +
+            "(" + String.concat "; " (Seq.map string __.Targets) + ")"
+
     let mk ts v =
         {
             Targets = ts
             Value = v
         }
+
+    let WithTargetBox tb snap =
+        { snap with Targets = tb :: snap.Targets }
 
     let Map f sn =
         mk sn.Targets (f sn.Value)
@@ -38,24 +42,27 @@ module Snapshots =
         async {
             let rec loop (ts: list<TargetBox>) =
                 match ts with
-                | [] -> async.Return(true)
+                | [] ->
+                    do printfn "Validate: NO TARGETS"
+                    async.Return(true)
                 | t :: ts ->
                     async {
+                        do printfn "Validate/X.."
                         let! ok = validateTargetBox rawLookup t
                         if ok then return! loop ts else return false
                     }
             return! loop snap.Targets
         }
 
-    module P = Pickler
-
     let targetsPickler =
-        P.list Pickler.TargetBox
+        Pickler.List TargetBoxes.Pickler
 
     let BuildPickler p =
-        P.product mk
-        ^+ P.field (fun x -> x.Targets) targetsPickler
-        ^. P.field (fun x -> x.Value) p
+        Pickler.Product mk
+        ^+ Pickler.Field (fun x -> x.Targets) targetsPickler
+        ^. Pickler.Field (fun x -> x.Value) p
+
+    let Unit = Pure ()
 
 type Snapshot<'T> =
     Snapshots.Snapshot<'T>
